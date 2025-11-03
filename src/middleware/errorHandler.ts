@@ -50,7 +50,7 @@ const handleJWTExpiredError = (): AppError =>
 const sendErrorDev = (err: CustomError, res: Response, req: Request): void => {
   // A) API
   if (req.originalUrl.startsWith('/api')) {
-    return res.status(err.statusCode || 500).json({
+   res.status(err.statusCode || 500).json({
       status: err.status,
       error: err,
       message: err.message,
@@ -60,7 +60,7 @@ const sendErrorDev = (err: CustomError, res: Response, req: Request): void => {
 
   // B) RENDERED WEBSITE
   logger.error('ERROR 💥', err);
-  return res.status(err.statusCode || 500).json({
+   res.status(err.statusCode || 500).json({
     title: 'Something went wrong!',
     msg: err.message,
   });
@@ -71,7 +71,7 @@ const sendErrorProd = (err: CustomError, res: Response, req: Request): void => {
   if (req.originalUrl.startsWith('/api')) {
     // A) Operational, trusted error: send message to client
     if (err.isOperational) {
-      return res.status(err.statusCode || 500).json({
+     res.status(err.statusCode || 500).json({
         status: err.status,
         message: err.message,
       });
@@ -82,7 +82,7 @@ const sendErrorProd = (err: CustomError, res: Response, req: Request): void => {
     logger.error('ERROR 💥', err);
 
     // 2) Send generic message
-    return res.status(500).json({
+     res.status(500).json({
       status: 'error',
       message: 'Something went very wrong!',
     });
@@ -91,7 +91,7 @@ const sendErrorProd = (err: CustomError, res: Response, req: Request): void => {
   // B) RENDERED WEBSITE
   // A) Operational, trusted error: send message to client
   if (err.isOperational) {
-    return res.status(err.statusCode || 500).json({
+     res.status(err.statusCode || 500).json({
       title: 'Something went wrong!',
       msg: err.message,
     });
@@ -102,7 +102,7 @@ const sendErrorProd = (err: CustomError, res: Response, req: Request): void => {
   logger.error('ERROR 💥', err);
 
   // 2) Send generic message
-  return res.status(err.statusCode || 500).json({
+   res.status(err.statusCode || 500).json({
     title: 'Something went wrong!',
     msg: 'Please try again later.',
   });

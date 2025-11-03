@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: meditrack-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: meditrack-ai
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - meditrack-network
+
+  # Redis for caching and session storage
+  redis:
+    image: redis:7-alpine
+    container_name: meditrack-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - meditrack-network
+
+  # MediTrack AI Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: meditrack-ai
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/meditrack-ai?authSource=admin
+      REDIS_URL: redis://redis:6379
+      LOG_LEVEL: info
+      SCHEDULER_ENABLED: true
+      TIMEZONE: UTC
+      # Add your actual environment variables here
+      # MASTRA_API_KEY: your_mastra_api_key_here
+      # MASTRA_AGENT_ID: medication-agent
+      # TELEX_WEBHOOK_SECRET: your_telex_webhook_secret_here
+      # TELEX_API_BASE_URL: https://api.telex.im
+      # JWT_SECRET: your_jwt_secret_here
+      # ENCRYPTION_KEY: your_encryption_key_here
+    ports:
+      - "3000:3000"
+    volumes:
+      - app_logs:/app/logs
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - meditrack-network
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx Reverse Proxy (Optional)
+  nginx:
+    image: nginx:alpine
+    container_name: meditrack-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    networks:
+      - meditrack-network
+
+  # Prometheus for monitoring (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: meditrack-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - meditrack-network
+    profiles:
+      - monitoring
+
+  # Grafana for visualization (Optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: meditrack-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - meditrack-network
+    profiles:
+      - monitoring
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  meditrack-network:
+    driver: bridge

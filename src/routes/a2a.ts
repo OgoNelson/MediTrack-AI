@@ -71,7 +71,7 @@ router.post('/a2a/test', (req: Request, res: Response) => {
   logger.info('🧪 A2A test webhook received', { body: req.body });
 
   // Echo back the request for testing
-  res.status(200).json({
+  return res.status(200).json({
     message: 'A2A test webhook received successfully',
     received: req.body,
     timestamp: new Date().toISOString()

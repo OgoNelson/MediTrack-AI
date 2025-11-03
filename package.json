@@ -2,7 +2,6 @@
   "name": "meditrack-ai",
   "version": "1.0.0",
   "description": "Intelligent medication reminder agent powered by Mastra AI and integrated with Telex.im",
-  "type": "module",
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
