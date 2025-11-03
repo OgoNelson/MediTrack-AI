@@ -1,0 +1,57 @@
+{
+  "name": "meditrack-ai",
+  "version": "1.0.0",
+  "description": "Intelligent medication reminder agent powered by Mastra AI and integrated with Telex.im",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "medication",
+    "reminder",
+    "ai",
+    "mastra",
+    "telex",
+    "healthcare"
+  ],
+  "author": "MediTrack AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "mastra": "^1.0.0",
+    "node-cron": "^3.0.2",
+    "dotenv": "^16.3.1",
+    "axios": "^1.5.0",
+    "joi": "^17.9.2",
+    "winston": "^3.10.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.10.0",
+    "uuid": "^9.0.0",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/express": "^4.17.17",
+    "@types/node-cron": "^3.0.8",
+    "@types/cors": "^2.8.13",
+    "@types/uuid": "^9.0.2",
+    "typescript": "^5.1.6",
+    "ts-node": "^10.9.1",
+    "nodemon": "^3.0.1",
+    "@types/jest": "^29.5.4",
+    "jest": "^29.6.2",
+    "ts-jest": "^29.1.1",
+    "eslint": "^8.47.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "prettier": "^3.0.2"
+  }
+}
