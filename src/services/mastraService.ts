@@ -221,7 +221,7 @@ export class MastraService {
       
       return {
         success: true,
-        data: data.result || data
+        data: (data as any).result || data
       };
 
     } catch (error) {
