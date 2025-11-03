@@ -162,7 +162,7 @@ export class A2AController {
    * Get or create user from Telex ID
    */
   private static async getOrCreateUser(telexId: string) {
-    let user = await User.findByTelexId(telexId);
+    let user = await (User as any).findByTelexId(telexId);
     
     if (!user) {
       user = new User({
@@ -249,7 +249,7 @@ export class A2AController {
    * Handle list medications
    */
   private static async handleListMedications(user: any) {
-    const medications = await Medication.findActiveByUser(user._id);
+    const medications = await (Medication as any).findActiveByUser(user._id);
     
     if (medications.length === 0) {
       return new A2AResponseBuilder()
