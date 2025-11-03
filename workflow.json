@@ -1,5 +1,26 @@
-
 {
   "active": true,
   "category": "healthcare",
   "description": "MediTrack AI - Intelligent medication reminder agent that helps patients and caregivers manage medication schedules through natural language conversations",
+  "long_description": "\nMediTrack AI is an intelligent medication reminder agent designed to help both patients and caregivers manage and adhere to medication schedules effortlessly. It's built using Mastra (for AI-driven understanding and intent extraction) and integrates with Telex.im via the A2A protocol, ensuring all communications are structured in JSON for consistency and automation.\n\nKey Features:\n• Natural language medication setup - Just tell the agent what medication you need to be reminded about\n• Smart scheduling - Automatically calculates reminder times based on frequency\n• Dual role support - Works for both patients and caregivers\n• Adherence tracking - Monitors medication compliance and provides insights\n• Flexible reminder intervals - Supports daily, 6-hourly, 8-hourly, and 12-hourly schedules\n• Real-time confirmations - Mark medications as taken, snooze, or skip doses\n• Caregiver management - Manage medications for multiple patients\n\nHow it works:\n1. Users interact with the agent through Telex.im chat interface\n2. The agent uses Mastra AI to understand natural language requests\n3. Medication schedules are automatically created and managed\n4. Timely reminders are sent with confirmation buttons\n5. All interactions are tracked for adherence monitoring\n\nSupported Commands:\n• \"Remind me to take Amoxicillin 500mg every 8 hours starting 6 AM for 5 days\"\n• \"Show my medications\" - Lists all active medications\n• \"I took my medicine\" - Confirms the most recent dose\n• \"Help\" - Shows available commands and features\n\nThe agent handles timezone conversions, medication interactions, and provides intelligent reminders based on user patterns and preferences.",
+  "name": "meditrack_ai_agent",
+  "nodes": [
+    {
+      "id": "meditrack_ai_node",
+      "name": "MediTrack AI Agent",
+      "parameters": {},
+      "position": [
+        816,
+        -112
+      ],
+      "type": "a2a/mastra-a2a-node",
+      "typeVersion": 1,
+      "url": "https://your-domain.com/webhook/a2a"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "short_description": "AI-powered medication reminder system with natural language processing"
+}
