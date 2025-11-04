@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { logger } from "./utils/logger";
 import { errorHandler } from "./middleware/errorHandler";
-import { connectDatabase } from "./config/database";
+import database from "./config/database";
 
 // Import routes
 import a2aRoutes from "./routes/a2a";
@@ -97,7 +97,7 @@ process.on("SIGINT", async () => {
 const startServer = async () => {
   try {
     // Connect to database
-    await connectDatabase();
+    await database.connectDatabase();
 
     // Start Express server
     app.listen(PORT, () => {
